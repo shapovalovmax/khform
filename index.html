@@ -118,13 +118,17 @@
 
         await fetch('https://script.google.com/macros/s/AKfycbxqOzwg5VOC57TY0oTIzvgdNiormQ49PcOeYYgdeTIVIOvudU_rZUpBWtAGQEOPzKnaKg/exec', {
             method: 'POST',
-            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Помилка відповіді сервера');
+                }
+                return response.json();
+            })
             .then(result => {
                 alert('Дані надіслані успішно!');
                 console.log(result);
